@@ -1,0 +1,70 @@
+@import "./setup/typography.scss";
+@import "./setup/responsivity.scss";
+@import "./setup/helpers.scss";
+@import "./setup/flex-helpers.scss";
+@import "./setup/mixins.scss";
+@import "./setup/transitions.scss";
+
+body {
+  margin: 0;
+  font-family: "Halvetica Neue";
+  font-weight: 100;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.container {
+  width: 100%;
+  padding: 0 1.5em 0 1.5rem;
+
+  @include md {
+    max-width: map-get($container-max-widths, md);
+    padding: 0;
+  }
+  @include lg {
+    max-width: map-get($container-max-widths, lg);
+  }
+  @include xl {
+    max-width: map-get($container-max-widths, xl);
+  }
+  @include xxl {
+    max-width: map-get($container-max-widths, xxl);
+  }
+}
+
+.menu-container {
+  width: 100%;
+
+  @include md {
+    max-width: map-get($menu-container-max-widths, md);
+  }
+  @include lg {
+    max-width: map-get($menu-container-max-widths, lg);
+  }
+  @include xl {
+    max-width: map-get($menu-container-max-widths, xl);
+  }
+  @include xxl {
+    max-width: map-get($menu-container-max-widths, xxl);
+  }
+}
+
+main {
+  margin: 0;
+  display: block;
+  overflow: hidden;
+}
+
+@media screen and (min-width: map-get($grid-breakpoints, md)) {
+  /***** MD and UP ****/
+}

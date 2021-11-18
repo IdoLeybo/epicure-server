@@ -1,0 +1,44 @@
+@import "../setup/mixins.scss";
+@import "../setup/responsivity.scss";
+
+.search-form {
+  border: 0.5px solid;
+  border-color: #5d5a59;
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem 0.25rem 0.5rem;
+  width: 100%;
+  max-width: 20rem;
+  min-width: 15rem;
+  display: none;
+
+  input {
+    box-sizing: border-box;
+    font-family: "Halvetica Neue";
+    font-size: 1rem;
+    font-weight: 100;
+    flex-grow: 10;
+    min-width: 0;
+
+    @include reset-input-style;
+
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  @include reset-button-style;
+}
+
+.search-form-lg {
+  @extend .search-form;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  min-width: 0;
+  max-width: none;
+  display: flex;
+}
+
+@media screen and (min-width: map-get($grid-breakpoints, md)) {
+  /***** MD and UP ****/
+  .search-form {
+    display: flex;
+  }
+}

@@ -1,0 +1,40 @@
+@import "../setup/mixins.scss";
+@import "../setup/responsivity.scss";
+
+.home-section {
+  justify-content: center;
+
+  padding: 3rem 0 3rem 0;
+  text-align: center;
+  display: flex;
+
+  h2 {
+    font-weight: 100;
+    margin-block-start: 0;
+    margin-block-end: 2.5rem;
+    font-size: 0.9rem;
+    letter-spacing: 0.05rem;
+  }
+}
+
+.home-section:first-of-type {
+  padding-top: 3rem;
+}
+
+@media screen and (min-width: map-get($grid-breakpoints, md)) {
+  /***** MD and UP ****/
+
+  .home-section:first-of-type {
+    display: none;
+  }
+
+  .home-section:nth-of-type(2) {
+    padding-top: 6rem;
+  }
+  .home-section {
+    h2 {
+      font-size: 1.5rem;
+      letter-spacing: 0.15rem;
+    }
+  }
+}

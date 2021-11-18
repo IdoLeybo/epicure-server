@@ -1,0 +1,116 @@
+@import "../setup/mixins.scss";
+@import "../setup/responsivity.scss";
+@import "../hamburgers/hamburgers.scss";
+
+nav {
+  width: 100%;
+  display: flex;
+  background-color: #f8f9fa;
+  justify-content: center;
+  padding: 1rem;
+  align-items: center;
+  overflow: hidden;
+
+  @include reset-button-style;
+
+  .nav-icon {
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+    margin-left: 0.5rem;
+  }
+
+  .nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 1.25rem 0 0;
+    align-items: center;
+    flex-grow: 10;
+    display: none;
+
+    li {
+      padding-right: 0.75rem;
+      padding-left: 0.75rem;
+
+      a {
+        text-decoration: none;
+        color: black;
+      }
+    }
+  }
+
+  .brand {
+    font-size: 1.5rem;
+    display: flex;
+    margin-right: 0;
+
+    text-decoration: none;
+    color: black;
+    align-items: center;
+
+    .logo {
+      margin-right: 0;
+    }
+
+    span {
+      display: none;
+    }
+  }
+
+  .hamburger-wrapper {
+    flex-grow: 1;
+    flex-basis: 0;
+    display: flex;
+  }
+
+  .buttons-wrapper {
+    flex-grow: 1;
+    flex-basis: 0;
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+@media screen and (min-width: map-get($grid-breakpoints, md)) {
+  /***** MD and UP ****/
+
+  nav {
+    .nav-icon {
+      padding-right: 0.5rem;
+      padding-left: 0.5rem;
+    }
+
+    .nav-list {
+      display: flex;
+    }
+
+    .brand {
+      margin-right: 1.25rem;
+
+      .logo {
+        margin-right: 0.5rem;
+      }
+
+      span {
+        display: block;
+      }
+    }
+
+    .buttons-wrapper {
+      flex-grow: 0;
+
+      .search-icon {
+        display: none;
+      }
+
+      .nav-icon {
+        padding-right: 0.5rem;
+        padding-left: 0.5rem;
+        margin-left: 1rem;
+      }
+    }
+
+    .hamburger-wrapper {
+      display: none;
+    }
+  }
+}

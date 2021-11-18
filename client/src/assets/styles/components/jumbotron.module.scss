@@ -1,0 +1,70 @@
+@import "../setup/mixins.scss";
+@import "../setup/responsivity.scss";
+
+.jumbotron {
+  width: 100vw;
+  height: 80vw;
+  justify-content: center;
+
+  background: -webkit-image-set(
+    url("../../images/hero/hero-picture.png") 1x,
+    url("../../images/hero/hero-picture@2x.png") 2x
+  );
+
+  //   background-image: url("../../images/hero/hero-picture.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+
+  .inside-box {
+    background-color: rgba(255, 255, 255, 0.88);
+    align-self: center;
+    padding: 2rem 3rem 2rem 3rem;
+    max-width: 90vw;
+    width: 100%;
+    text-align: center;
+
+    span {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+@media screen and (min-width: map-get($grid-breakpoints, md)) {
+  /***** MD and UP ****/
+
+  .jumbotron {
+    height: 80vh;
+
+    .inside-box {
+      padding: 2.5rem 8.5rem 2.5rem 8.5rem;
+      max-width: 48rem;
+
+      span {
+        font-size: 2rem;
+      }
+    }
+  }
+}
+
+/***** TRANSITIONS ****/
+
+.inside-box-transition-enter {
+  opacity: 0;
+  transform: scale(0.9);
+}
+.inside-box-transition-enter-active {
+  opacity: 1;
+  transition: opacity 500ms;
+  transform: translateX(0);
+  transition: opacity 500ms, transform 500ms;
+}
+.inside-box-transition-exit {
+  opacity: 1;
+}
+.inside-box-transition-exit-active {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 500ms, transform 500ms;
+}

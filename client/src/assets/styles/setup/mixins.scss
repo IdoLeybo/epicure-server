@@ -1,0 +1,29 @@
+@mixin reset-button-style {
+  button,
+  input[type="submit"],
+  input[type="reset"] {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+  }
+}
+
+@mixin reset-input-style {
+  border: none;
+  background-image: none;
+  background-color: transparent;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  -webkit-appearance: none;
+  outline: none;
+}
+
+@mixin reset-link-style {
+  text-decoration: none;
+  color: inherit;
+}

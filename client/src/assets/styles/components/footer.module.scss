@@ -1,0 +1,157 @@
+@import "../setup/mixins.scss";
+@import "../setup/responsivity.scss";
+
+.footer {
+  text-align: left;
+  display: block;
+
+  .footer-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 2.5rem 0 2.5rem 0;
+
+    .footer-main {
+      display: flex;
+      align-items: center;
+
+      padding-left: 3rem;
+      padding-right: 3rem;
+
+      .about-left {
+        flex-grow: 1.5;
+        flex-basis: 0;
+        text-align: center;
+
+        h2 {
+          font-weight: 100;
+          letter-spacing: 0.15rem;
+          margin-block-start: 0;
+          margin-block-end: 2.5rem;
+          font-size: 1.25rem;
+        }
+
+        p {
+          letter-spacing: 0.1rem;
+          font-size: 1.25rem;
+        }
+
+        .mobile-only-logo {
+          width: 35vw;
+          padding: 3rem 0 3rem 0;
+          min-width: 10.5rem;
+        }
+
+        .app-buttons-container {
+          display: flex;
+          column-gap: 1rem;
+          justify-content: center;
+          flex-wrap: wrap;
+          row-gap: 1rem;
+
+          .app-button {
+            border: solid 0.6px black;
+            border-radius: 0.75rem;
+            padding: 0.5rem 0.75rem 0.5rem 0.75rem;
+            display: flex;
+            align-items: center;
+            column-gap: 0.5rem;
+            text-align: center;
+            letter-spacing: 0.05rem;
+            //min-width: 10.5rem;
+
+            .os-icon {
+              height: 1.5rem;
+              img {
+                height: 100%;
+              }
+            }
+
+            .text-sm {
+              font-size: 0.5rem;
+              font-weight: 400;
+            }
+
+            .text-lg {
+              font-size: 0.75rem;
+              font-weight: 400;
+            }
+          }
+        }
+      }
+
+      .about-right {
+        flex-grow: 1;
+        flex-basis: 0;
+
+        display: none;
+        flex-direction: row;
+        justify-content: center;
+
+        img {
+          width: 11rem;
+        }
+      }
+    }
+  }
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  column-gap: 4rem;
+  flex-direction: column;
+  text-align: center;
+  row-gap: 2rem;
+
+  a {
+    @include reset-link-style;
+  }
+}
+
+@media screen and (min-width: map-get($grid-breakpoints, md)) {
+  /***** MD and UP ****/
+
+  .footer {
+    .footer-wrapper {
+      .footer-main {
+        padding-left: 0;
+        padding-right: 0;
+        .about-left {
+          text-align: left;
+
+          h2 {
+            font-size: 1.5rem;
+          }
+
+          .mobile-only-logo {
+            display: none;
+          }
+
+          .app-buttons-container {
+            justify-content: flex-start;
+
+            .app-button {
+              padding: 0.5rem 1rem 0.5rem 1rem;
+              column-gap: 1rem;
+
+              .text-sm {
+                font-size: 0.75rem;
+              }
+
+              .text-lg {
+                font-size: 1rem;
+              }
+            }
+          }
+        }
+        .about-right {
+          display: flex;
+        }
+      }
+    }
+  }
+
+  .footer-links {
+    flex-direction: row;
+  }
+}
