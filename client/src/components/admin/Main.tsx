@@ -24,6 +24,7 @@ export default function Main() {
         });
       });
     }
+
     setIsLoading(false);
   }, []);
 
