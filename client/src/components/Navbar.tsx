@@ -6,8 +6,20 @@ import SearchBox from "./SearchBox";
 import userIcon from "../assets/images/icons/user-icon.svg";
 import bagIcon from "../assets/images/icons/bag-icon.svg";
 import searchIcon from "../assets/images/icons/search-icon.svg";
+import firebase from "firebase";
+import "firebase/auth";
 
 const Navbar = () => {
+  const signOut = () => {
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {})
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <nav className="d-flex">
       <div className="menu-container d-flex">
@@ -32,7 +44,7 @@ const Navbar = () => {
         </a>
         <ul className={styles["nav-list"] + " d-flex flex-row"}>
           <li>
-            <a href="#">Restaurants</a>
+            <a href="/api/restaurants">Restaurants</a>
           </li>
           <li>
             <a href="#">Chefs</a>
@@ -43,7 +55,7 @@ const Navbar = () => {
           <button className={styles["nav-icon"] + " " + styles["search-icon"]}>
             <img src={searchIcon} alt="search" />
           </button>
-          <button className={styles["nav-icon"]}>
+          <button className={styles["nav-icon"]} onClick={signOut}>
             <img src={userIcon} alt="user" />
           </button>
           <button className={styles["nav-icon"]}>
