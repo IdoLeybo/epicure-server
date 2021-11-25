@@ -1,17 +1,17 @@
 import mongoose, { Schema } from "mongoose";
 
-const restaurantSchema = new mongoose.Schema({
-  name: { type: String, required: true, default: "" },
+const chefSchema = new mongoose.Schema({
+  chefName: { type: String, required: true, default: "" },
   image: { type: String, required: true, default: "" },
-  chef: { type: Schema.Types.ObjectId, ref: "chef" },
+  description: { type: String, required: true, default: "" },
   valid: { type: Boolean },
 });
 
-restaurantSchema.set("toJSON", {
+chefSchema.set("toJSON", {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject.__v;
   },
 });
 
-module.exports = mongoose.model("Restaurant", restaurantSchema);
+module.exports = mongoose.model("Chef", chefSchema);
