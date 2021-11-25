@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { URI } from "../AdminSystem";
+import { URI } from "../../AdminSystem";
 
 export default function ChefModal(props: any) {
   const details = props.details;
@@ -10,13 +10,12 @@ export default function ChefModal(props: any) {
   const [typeIcon, setTypeIcon] = useState(details.typeIcon);
   const [price, setPrice] = useState(details.price);
   const [restaurant, setRestaurant] = useState(details.restaurant);
-
   const [veganType, setVeganType] = useState(details.typeIcon["vegan"]);
   const [spicyType, setSpicyType] = useState(details.typeIcon["spicy"]);
   const [vegetarianType, setVegetarianType] = useState(
     details.typeIcon["vegetarian"]
   );
-  const restaurants = props.restaurants;
+  const admin = JSON.parse(localStorage.getItem("admin") as any);
 
   const updateDish = (id: string) => {
     setTypeIcon(
@@ -33,18 +32,32 @@ export default function ChefModal(props: any) {
       price: price,
       restaurant: restaurant,
     };
-    axios.put(`${URI}/api/dishes/update/${id}`, data).catch((err) => {
-      throw err;
-    });
+    updateFetch(id, data);
   };
 
   const deleteDish = (id: string) => {
     const data = {
       valid: false,
     };
-    axios.put(`${URI}/api/dishes/update/${id}`, data).catch((err) => {
-      throw err;
-    });
+    updateFetch(id, data);
+  };
+
+  const updateFetch = (id: string, data: object) => {
+    fetch(`${URI}/api/dishes/update/${id}`, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${admin.token}`,
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Success:", data);
+      })
+      .catch((err) => {
+        console.error("Error:", err);
+      });
   };
 
   const handleOnChange = (e: any) => {
