@@ -12,6 +12,8 @@ users.get("/", validateToken, (req: Request, res: Response) => {
 
 users.post("/register", (req: Request, res: Response) => {
   const { username, password } = req.body;
+  // if (password.length < 6)
+  //   return res.status(400).send({ type: "error", message: "password needs to be" });
   bcrypt.hash(password, 10).then((hash: HashAlgorithmIdentifier) => {
     User.create({
       username: username,
@@ -26,20 +28,6 @@ users.post("/register", (req: Request, res: Response) => {
         }
       });
   });
-  // if (password.length < 6)
-  //   res.status(400).send({ type: "password", message: "password needs to be" });
-  // const user = new User({
-  //   username: username,
-  //   password: password,
-  // });
-  // user
-  //   .save()
-  //   .then(() => {
-  //     res.status(200).redirect("/");
-  //   })
-  //   .catch((err: Error) => {
-  //     res.status(500).send(err.message);
-  //   });
 });
 
 users.post("/login", async (req: Request, res: Response) => {
