@@ -13,7 +13,7 @@ dishes.get("/", (req: Request, res: Response) => {
 
 dishes.post("/new", async (req: Request, res: Response) => {
   const data = req.body;
-
+  console.log(data);
   const restaurant = await Restaurant.findById({
     _id: data.restaurant,
   });
@@ -37,7 +37,7 @@ dishes.post("/new", async (req: Request, res: Response) => {
     });
 });
 
-dishes.put("/update/:id", async (req: Request, res: Response) => {
+dishes.post("/update/:id", async (req: Request, res: Response) => {
   const id = req.params.id;
   const data = req.body;
   try {
