@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import axios from "axios";
-import { URI } from "../AdminSystem";
+import { URI } from "../../AdminSystem";
 
 export default function RestaurantModal(props: any) {
   const details = props.details;
   const [name, setName] = useState(details.name);
   const [chef, setChef] = useState(details.chef);
   const [image, setImage] = useState(details.image);
+  const admin = JSON.parse(localStorage.getItem("admin") as any);
 
   const updateRestaurant = (id: string) => {
     const data = {
@@ -14,9 +14,32 @@ export default function RestaurantModal(props: any) {
       chef: chef,
       image: image,
     };
-    axios.put(`${URI}/api/restaurants/update/${id}`, data).catch((err) => {
-      throw err;
-    });
+    updateFetch(id, data);
+  };
+
+  const deleteRestaurant = (id: string) => {
+    const data = {
+      valid: false,
+    };
+    updateFetch(id, data);
+  };
+
+  const updateFetch = (id: string, data: object) => {
+    fetch(`${URI}/api/restaurants/update/${id}`, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${admin.token}`,
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Success:", data);
+      })
+      .catch((err) => {
+        console.error("Error:", err);
+      });
   };
 
   return (
@@ -41,18 +64,13 @@ export default function RestaurantModal(props: any) {
           setImage(event.target.value);
         }}
       />
-      <label>Select chef:</label>
-      <select
-        value={chef}
-        placeholder={details.chef}
-        onChange={(event) => {
-          setChef(event.target.value);
-        }}
-      >
-        <option value={details.chef}>{details.chef}</option>
-        <option value="chef name2">chef name2</option>
-      </select>
+
+      <img src={image} width="200px" />
+
       <button onClick={() => updateRestaurant(details._id)}>Update</button>
+      <button onClick={() => deleteRestaurant(details._id)}>
+        Delete Restaurant
+      </button>
     </form>
   );
 }

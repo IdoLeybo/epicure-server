@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Dishes from "./Dishes";
-import EditForm from "./Modal/EditForm";
+import EditForm from "./Modal/EditModals/EditForm";
 
 export default function Restaurant(props: any) {
   const [isModal, setIsModal] = useState(false);
