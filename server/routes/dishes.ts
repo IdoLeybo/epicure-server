@@ -25,6 +25,7 @@ dishes.post("/new", async (req: Request, res: Response) => {
     typeIcon: data.typeIcon,
     price: data.price,
     restaurant: makeObjectId(restaurant._id),
+    valid: true,
   });
   chef
     .save()
