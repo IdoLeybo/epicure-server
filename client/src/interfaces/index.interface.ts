@@ -14,3 +14,22 @@ export interface gallery {
   seeMoreText?: string;
   cards: card[];
 }
+
+export interface restaurant {
+  chefName: string;
+  name: string;
+  id?: string;
+  _id?: string;
+}
+
+export interface chef {
+  chefName: string;
+  id?: string;
+  _id?: string;
+}
+
+export interface dish {
+  chefName: string;
+  id?: string;
+  _id?: string;
+}

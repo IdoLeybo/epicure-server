@@ -3,9 +3,10 @@ const mongoose = require("mongoose");
 const restaurants = Router();
 const Restaurant = require("../models/restaurant");
 const Chef = require("../models/chef");
+const { validateToken } = require("../src/JWT");
 const makeObjectId = mongoose.Types.ObjectId;
 
-restaurants.get("/", (req: Request, res: Response) => {
+restaurants.get("/", validateToken, (req: Request, res: Response) => {
   try {
     Restaurant.find({}).then((data: object[]) => {
       res.status(200).send(data);
@@ -15,18 +16,15 @@ restaurants.get("/", (req: Request, res: Response) => {
   }
 });
 
-restaurants.post("/new", async (req: Request, res: Response) => {
+restaurants.post("/new", validateToken, async (req: Request, res: Response) => {
   const data = req.body;
-  console.log(data);
-
   const chef = await Chef.findById({ _id: data.chef });
-
-  console.log(chef);
 
   const restaurant = new Restaurant({
     name: data.name,
     image: data.image,
     chef: makeObjectId(chef._id),
+    valid: true,
   });
 
   restaurant
@@ -39,17 +37,21 @@ restaurants.post("/new", async (req: Request, res: Response) => {
     });
 });
 
-restaurants.put("/update/:id", async (req: Request, res: Response) => {
-  const id = req.params.id;
-  const data = req.body;
-  try {
-    let updata = await Restaurant.findOneAndUpdate({ _id: id }, data, {
-      new: true,
-    });
-    res.status(203).send(updata);
-  } catch (err) {
-    res.status(404).send(`Error: ID not found`);
+restaurants.put(
+  "/update/:id",
+  validateToken,
+  async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const data = req.body;
+    try {
+      let updata = await Restaurant.findOneAndUpdate({ _id: id }, data, {
+        new: true,
+      });
+      res.status(203).send(updata);
+    } catch (err) {
+      res.status(404).send(`Error: ID not found`);
+    }
   }
-});
+);
 
 module.exports = restaurants;

@@ -25,6 +25,7 @@ dishes.post("/new", async (req: Request, res: Response) => {
     typeIcon: data.typeIcon,
     price: data.price,
     restaurant: makeObjectId(restaurant._id),
+    valid: true,
   });
   chef
     .save()
@@ -34,6 +35,19 @@ dishes.post("/new", async (req: Request, res: Response) => {
     .catch((err: Error) => {
       res.status(500).send(err.message);
     });
+});
+
+dishes.put("/update/:id", async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const data = req.body;
+  try {
+    let updata = await Dish.findOneAndUpdate({ _id: id }, data, {
+      new: true,
+    });
+    res.status(203).send(updata);
+  } catch (err) {
+    res.status(404).send(`Error: ID not found`);
+  }
 });
 
 module.exports = dishes;

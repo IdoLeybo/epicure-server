@@ -15,6 +15,7 @@ chefs.post("/new", (req: Request, res: Response) => {
     chefName: data.chefName,
     image: data.image,
     description: data.description,
+    valid: true,
     // restaurants: data.restaurants,
   });
 

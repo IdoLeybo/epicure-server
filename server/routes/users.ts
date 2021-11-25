@@ -1,27 +1,73 @@
 import { Router, Request, Response } from "express";
+const bcrypt = require("bcrypt");
 const users = Router();
 const User = require("../models/user");
+const { createTokens, validateToken } = require("../src/JWT");
 
-users.get("/", (req: Request, res: Response) => {
+users.get("/", validateToken, (req: Request, res: Response) => {
   User.find({}).then((data: object[]) => {
     res.status(200).send(data);
   });
 });
 
-users.post("/new", (req: Request, res: Response) => {
-  const data = req.body;
-  const user = new User({
-    firstName: data.firstName,
-    lastName: data.lastName,
-  });
-  user
-    .save()
-    .then(() => {
-      res.status(200).redirect("/api/users");
+users.post("/register", (req: Request, res: Response) => {
+  const { username, password } = req.body;
+  bcrypt.hash(password, 10).then((hash: HashAlgorithmIdentifier) => {
+    User.create({
+      username: username,
+      password: hash,
     })
-    .catch((err: Error) => {
-      res.status(500).send(err.message);
-    });
+      .then(() => {
+        res.status(200).redirect("/");
+      })
+      .catch((err: Error) => {
+        if (err) {
+          res.status(400).json({ error: err });
+        }
+      });
+  });
+  // if (password.length < 6)
+  //   res.status(400).send({ type: "password", message: "password needs to be" });
+  // const user = new User({
+  //   username: username,
+  //   password: password,
+  // });
+  // user
+  //   .save()
+  //   .then(() => {
+  //     res.status(200).redirect("/");
+  //   })
+  //   .catch((err: Error) => {
+  //     res.status(500).send(err.message);
+  //   });
+});
+
+users.post("/login", async (req: Request, res: Response) => {
+  const { username, password } = req.body;
+  const user = await User.findOne({ username: username });
+  if (!user) return res.status(400).send({ error: "User Doesn't Exist" });
+
+  const dbPassword = user.password;
+  bcrypt.compare(password, dbPassword).then((match: any) => {
+    if (!match) {
+      res
+        .status(400)
+        .send({ error: "Wrong Username and Password Combination!" });
+    } else {
+      const accessToken = createTokens(user);
+
+      // res.cookie("access-token", accessToken, {
+      //   maxAge: 60 * 60 * 24 * 30 * 1000,
+      //   httpOnly: true,
+      // });
+
+      const result = {
+        user: user,
+        accessToken: accessToken,
+      };
+      res.json(result);
+    }
+  });
 });
 
 users.delete("/:id", (req: Request, res: Response) => {
