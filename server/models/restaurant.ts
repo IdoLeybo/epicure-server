@@ -4,6 +4,7 @@ const restaurantSchema = new mongoose.Schema({
   name: { type: String, required: true, default: "" },
   image: { type: String, required: true, default: "" },
   chef: { type: Schema.Types.ObjectId, ref: "chef" },
+  valid: { type: Boolean },
 });
 
 restaurantSchema.set("toJSON", {

@@ -7,6 +7,7 @@ const dishSchema = new Schema({
   typeIcon: { type: Object },
   price: { type: String, required: true, default: "" },
   restaurant: { type: Schema.Types.ObjectId, ref: "restaurant" },
+  valid: { type: Boolean },
 });
 
 module.exports = mongoose.model("Dish", dishSchema);
