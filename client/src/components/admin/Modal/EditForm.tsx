@@ -8,6 +8,7 @@ export default function EditForm(props: any) {
   const openForm = () => props.openForm();
   const details = props.details;
   const modalType = props.modalType;
+  const restaurants = props.restaurants;
 
   return (
     <div>
@@ -17,7 +18,9 @@ export default function EditForm(props: any) {
       ) : modalType === "chef" ? (
         <ChefModal details={details} />
       ) : (
-        modalType === "dish" && <DishModal details={details} />
+        modalType === "dish" && (
+          <DishModal details={details} restaurants={restaurants} />
+        )
       )}
     </div>
   );

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { URI } from "../Main";
+import { URI } from "../AdminSystem";
 
 export default function ChefModal(props: any) {
   const details = props.details;
@@ -16,6 +16,7 @@ export default function ChefModal(props: any) {
   const [vegetarianType, setVegetarianType] = useState(
     details.typeIcon["vegetarian"]
   );
+  const restaurants = props.restaurants;
 
   const updateDish = (id: string) => {
     setTypeIcon(
@@ -31,6 +32,15 @@ export default function ChefModal(props: any) {
       typeIcon: typeIcon,
       price: price,
       restaurant: restaurant,
+    };
+    axios.put(`${URI}/api/dishes/update/${id}`, data).catch((err) => {
+      throw err;
+    });
+  };
+
+  const deleteDish = (id: string) => {
+    const data = {
+      valid: false,
     };
     axios.put(`${URI}/api/dishes/update/${id}`, data).catch((err) => {
       throw err;
@@ -121,7 +131,7 @@ export default function ChefModal(props: any) {
 
         <label htmlFor="vegetarian">vegetarian</label>
       </div>
-
+      {/* 
       <label>Select restaurant:</label>
       <select
         value={restaurant}
@@ -130,11 +140,19 @@ export default function ChefModal(props: any) {
           setRestaurant(event.target.value);
         }}
       >
+        {restaurants.map((item: any, index: number) => {
+          return (
+            <option key={index} value={item._id}>
+              {item.name}
+            </option>
+          );
+        })}
         <option value={details.restaurant}>{details.restaurant}</option>
         <option value="restaurant2">restaurant2</option>
-      </select>
+      </select> */}
 
       <button onClick={() => updateDish(details._id)}>Update</button>
+      <button onClick={() => deleteDish(details._id)}>Delete Dish</button>
     </form>
   );
 }

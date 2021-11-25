@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { URI } from "../Main";
+import { URI } from "../AdminSystem";
 
 export default function ChefModal(props: any) {
   const details = props.details;
