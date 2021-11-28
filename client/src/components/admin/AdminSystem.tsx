@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import AdminNav from "./AdminNav";
-import axios from "axios";
+import AdminNav from "./Nav/AdminNav";
 export const URI = process.env.URI || "http://localhost:8080";
 
 export default function Main(props: any) {
@@ -19,22 +18,27 @@ export default function Main(props: any) {
   }, []);
 
   const getAllData = async () => {
-    const res = await fetch(`${URI}/api/all`, {
-      method: "GET",
-      headers: {
-        "Content-type": "application/json",
-        Authorization: `Bearer ${admin.token}`,
-      },
-    });
-    const data = await res.json();
-    data.map((obj: any) => {
-      obj.name === "chefs"
-        ? setChefsArr(obj.data)
-        : obj.name === "restaurants"
-        ? setRestaurantsArr(obj.data)
-        : setDishArr(obj.data);
-    });
-    return data;
+    try {
+      const res = await fetch(`${URI}/api/all`, {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${admin.token}`,
+        },
+      });
+      const data = await res.json();
+
+      data.map((obj: any) => {
+        obj.name === "chefs"
+          ? setChefsArr(obj.data)
+          : obj.name === "restaurants"
+          ? setRestaurantsArr(obj.data)
+          : setDishArr(obj.data);
+      });
+      return;
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
