@@ -56,31 +56,35 @@ restaurants.post(
   }
 );
 
-restaurants.post("/delete/:id", async (req: Request, res: Response) => {
-  const id = req.params.id;
-  const data = req.body;
+restaurants.post(
+  "/delete/:id",
+  validateToken,
+  async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const data = req.body;
 
-  let response = await Restaurant.findOneAndUpdate({ _id: id }, data, {
-    new: true,
-  });
-
-  const aggregation = restaurantAggregate(response);
-  Restaurant.aggregate(aggregation)
-    .then((data: any) => {
-      const dishes = data[0].dishes;
-      dishes.map(async (item: any) => {
-        await Dish.findOneAndUpdate(
-          { _id: item._id },
-          { valid: true },
-          { new: true }
-        );
-      });
-      res.send(data);
-    })
-    .catch((err: Error) => {
-      console.log(err);
-      res.status(400).send(err);
+    let response = await Restaurant.findOneAndUpdate({ _id: id }, data, {
+      new: true,
     });
-});
+
+    const aggregation = restaurantAggregate(response);
+    Restaurant.aggregate(aggregation)
+      .then((data: any) => {
+        const dishes = data[0].dishes;
+        dishes.map(async (item: any) => {
+          await Dish.findOneAndUpdate(
+            { _id: item._id },
+            { valid: false },
+            { new: true }
+          );
+        });
+        res.send(data);
+      })
+      .catch((err: Error) => {
+        console.log(err);
+        res.status(400).send(err);
+      });
+  }
+);
 
 module.exports = restaurants;

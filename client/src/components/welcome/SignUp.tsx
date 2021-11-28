@@ -8,29 +8,33 @@ export default function SignUp(props: any) {
 
   const createUser = async () => {
     if (usernameRef.current.value === "" || passwordRef.current.value === "")
-      alert("Must fill all fields");
-    const res = await fetch(`${URI}/api/users/register`, {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({
-        username: usernameRef.current.value,
-        password: passwordRef.current.value,
-      }),
-    });
-    const data = await res.json();
+      return alert("Must fill all fields");
+    try {
+      const res = await fetch(`${URI}/api/users/register`, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          username: usernameRef.current.value,
+          password: passwordRef.current.value,
+        }),
+      });
+      const data = await res.json();
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
-    <>
-      <h1>Sign Up</h1>
-      <form
-        className="loggin-form"
+    <div>
+      <div
+        className="form"
         style={{ display: "flex", flexDirection: "column" }}
       >
-        <label className="label-fields">
-          userName:
+        <h3>Sign Up</h3>
+        <label className="form-label">
+          Username:
           <input
             className="form-input"
             type="text"
@@ -40,25 +44,24 @@ export default function SignUp(props: any) {
           />
         </label>
 
-        <label className="label-fields">
+        <label className="form-label">
           Password:
           <input
             className="form-input"
             type="password"
             ref={passwordRef}
-            placeholder="Enter password"
+            placeholder="Enter Password"
             required
           />
         </label>
-        <button
-          className="loggin-btn"
-          onClick={() => createUser()}
-          style={{ width: "100px" }}
-        >
+        <button className="form-btn" onClick={() => createUser()}>
           Sign Up
         </button>
-        <a onClick={() => setIsSignUp(false)}>To Login page</a>
-      </form>
-    </>
+        <span className="form-span">
+          You already have an account?
+          <a onClick={() => setIsSignUp(false)}> Sign In</a>
+        </span>
+      </div>
+    </div>
   );
 }

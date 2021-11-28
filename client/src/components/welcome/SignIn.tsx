@@ -12,6 +12,8 @@ export default function SignIn(props: any) {
   let history = useHistory();
 
   const loginUser = async () => {
+    if (usernameRef.current.value === "" || passwordRef.current.value === "")
+      return alert("Must fill all fields");
     try {
       const res = await fetch(`${URI}/api/users/login`, {
         method: "POST",
@@ -31,7 +33,7 @@ export default function SignIn(props: any) {
           JSON.stringify({ token: data.accessToken })
         );
         setAdmin(data.user);
-        history.push("/");
+        history.push("/restaurants");
       } else {
         localStorage.setItem(
           "user",
@@ -47,18 +49,33 @@ export default function SignIn(props: any) {
 
   return (
     <div>
-      <h1>Sign In</h1>
-      <div>
-        <label>
+      <div className="form">
+        <h3>Sign In</h3>
+        <label className="form-label">
           Username:
-          <input type="text" ref={usernameRef} />
+          <input
+            className="form-input"
+            type="text"
+            ref={usernameRef}
+            placeholder="Enter Username"
+          />
         </label>
-        <label>
+        <label className="form-label">
           Password:
-          <input type="password" ref={passwordRef} />
+          <input
+            className="form-input"
+            type="password"
+            ref={passwordRef}
+            placeholder="Enter Password"
+          />
         </label>
-        <button onClick={loginUser}>Log In</button>
-        <button onClick={() => setIsSignUp(true)}>Sign Up</button>
+        <button className="form-btn" onClick={loginUser}>
+          Log In
+        </button>
+        <span className="form-span">
+          You don't have account?{" "}
+          <a onClick={() => setIsSignUp(true)}>Sign Up</a>
+        </span>
       </div>
     </div>
   );

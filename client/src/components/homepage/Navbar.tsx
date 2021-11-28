@@ -1,11 +1,11 @@
-import logoPng from "../assets/images/brand-icon/icon.png";
-import logo2xPng from "../assets/images/brand-icon/icon@2x.png";
-import logo3xPng from "../assets/images/brand-icon/icon@3x.png";
-import styles from "../assets/styles/components/navbar.module.scss";
+import logoPng from "../../assets/images/brand-icon/icon.png";
+import logo2xPng from "../../assets/images/brand-icon/icon@2x.png";
+import logo3xPng from "../../assets/images/brand-icon/icon@3x.png";
+import styles from "../../assets/styles/components/navbar.module.scss";
 import SearchBox from "../SearchBox";
-import userIcon from "../assets/images/icons/user-icon.svg";
-import bagIcon from "../assets/images/icons/bag-icon.svg";
-import searchIcon from "../assets/images/icons/search-icon.svg";
+import userIcon from "../../assets/images/icons/user-icon.svg";
+import bagIcon from "../../assets/images/icons/bag-icon.svg";
+import searchIcon from "../../assets/images/icons/search-icon.svg";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Homepage from "./Homepage";
 
@@ -20,12 +20,57 @@ const Navbar = (props: any) => {
   return (
     <>
       <Router>
-        <Link to="/">Epicure</Link>
-        <Link to="/restaurants">Restaurants</Link>
-        <Link to="/chefs">Chefs</Link>
-        <Link to="/welcome" onClick={logout}>
-          Logout
-        </Link>
+        <nav className="d-flex">
+          <div className="menu-container d-flex">
+            <div className={styles["hamburger-wrapper"]}>
+              <button
+                className={styles["hamburger hamburger--collapse"]}
+                type="button"
+              >
+                <span className={styles["hamburger-box"]}>
+                  <span className={styles["hamburger-inner"]}></span>
+                </span>
+              </button>
+            </div>
+            <Link to="/" className={styles.brand}>
+              <img
+                src={logoPng}
+                srcSet={`${logo2xPng} 2x, ${logo3xPng} 3x`}
+                alt="logo"
+                className={styles.logo}
+              />
+              <span>EPICURE</span>
+            </Link>
+            <ul className={styles["nav-list"] + " d-flex flex-row"}>
+              <li>
+                <Link to="/restaurants">Restaurants</Link>
+              </li>
+              <li>
+                <Link to="/chefs">Chefs</Link>
+              </li>
+            </ul>
+            <SearchBox />
+            <div className={styles["buttons-wrapper"]}>
+              <Link
+                to="/search"
+                className={styles["nav-icon"] + " " + styles["search-icon"]}
+              >
+                <img src={searchIcon} alt="search" />
+              </Link>
+              <Link
+                to="/welcome"
+                onClick={logout}
+                className={styles["nav-icon"]}
+              >
+                <img src={userIcon} alt="user" />
+              </Link>
+              <Link to="/bag" className={styles["nav-icon"]}>
+                {" "}
+                <img src={bagIcon} alt="bag" />
+              </Link>
+            </div>
+          </div>
+        </nav>
         <Switch>
           <Route path="/">
             <Homepage />

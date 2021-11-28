@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react";
-import Navbar from "./components/homepage/Navbar";
-import Homepage from "./components/homepage/Homepage";
-import { CSSTransition } from "react-transition-group";
 import Aos from "aos";
 import "aos/dist/aos.css";
-import SignIn from "./components/welcome/SignIn";
 import AdminSystem from "./components/admin/AdminSystem";
 import UserSystem from "./components/homepage/UserSystem";
 import Welcome from "./components/welcome/Welcome";
