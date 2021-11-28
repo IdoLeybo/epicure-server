@@ -1,5 +1,5 @@
 import React from "react";
-import "../style.scss";
+import "../modals.scss";
 import CreateChef from "./CreateChef";
 import CreateDish from "./CreateDish";
 import CreateRestaurant from "./CreateRestaurant";

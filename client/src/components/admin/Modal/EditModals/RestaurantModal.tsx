@@ -14,18 +14,20 @@ export default function RestaurantModal(props: any) {
       chef: chef,
       image: image,
     };
-    updateFetch(id, data);
+    const type = "update";
+    updateFetch(id, data, type);
   };
 
   const deleteRestaurant = (id: string) => {
     const data = {
       valid: false,
     };
-    updateFetch(id, data);
+    const type = "delete";
+    updateFetch(id, data, type);
   };
 
-  const updateFetch = (id: string, data: object) => {
-    fetch(`${URI}/api/restaurants/update/${id}`, {
+  const updateFetch = (id: string, data: object, type: string) => {
+    fetch(`${URI}/api/restaurants/${type}/${id}`, {
       method: "POST",
       headers: {
         "Content-type": "application/json",
@@ -43,20 +45,19 @@ export default function RestaurantModal(props: any) {
   };
 
   return (
-    <form
-      className="edit-modal-container"
-      style={{ display: "flex", flexDirection: "column" }}
-    >
+    <form className="edit-modal-container">
       <h1>Edit restaurant details</h1>
-      <label>Restaurnt Name:</label>
+      <label className="label">Restaurnt Name:</label>
       <input
+        className="input"
         type="text"
         value={name}
         placeholder={details.name}
         onChange={(event) => setName(event.target.value)}
       />
-      <label>Image url:</label>
+      <label className="label">Image url:</label>
       <input
+        className="input"
         type="text"
         value={image}
         placeholder={details.image}
@@ -65,12 +66,21 @@ export default function RestaurantModal(props: any) {
         }}
       />
 
-      <img src={image} width="200px" />
-
-      <button onClick={() => updateRestaurant(details._id)}>Update</button>
-      <button onClick={() => deleteRestaurant(details._id)}>
-        Delete Restaurant
-      </button>
+      <img className="item-img" src={image} />
+      <div className="buttons-div">
+        <button
+          className="delete-btn"
+          onClick={() => deleteRestaurant(details._id)}
+        >
+          Delete Restaurant
+        </button>
+        <button
+          className="update-btn"
+          onClick={() => updateRestaurant(details._id)}
+        >
+          Update
+        </button>
+      </div>
     </form>
   );
 }

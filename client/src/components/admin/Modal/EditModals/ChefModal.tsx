@@ -45,27 +45,27 @@ export default function ChefModal(props: any) {
   };
 
   return (
-    <form
-      className="edit-modal-container"
-      style={{ display: "flex", flexDirection: "column" }}
-    >
+    <form className="edit-modal-container">
       <h1>Edit chef details</h1>
-      <label>Chef Name:</label>
+      <label className="label">Chef Name:</label>
       <input
+        className="input"
         type="text"
         value={name}
         placeholder={details.chefName}
         onChange={(event) => setName(event.target.value)}
       />
-      <label>Description:</label>
+      <label className="label">Description:</label>
       <input
+        className="input"
         type="text"
         value={description}
         placeholder={details.description}
         onChange={(event) => setDescription(event.target.value)}
       />
-      <label>Image url:</label>
+      <label className="label">Image url:</label>
       <input
+        className="input"
         type="text"
         value={image}
         placeholder={details.image}
@@ -73,9 +73,15 @@ export default function ChefModal(props: any) {
           setImage(event.target.value);
         }}
       />
-
-      <button onClick={() => updateChef(details._id)}>Update</button>
-      <button onClick={() => deleteChef(details._id)}>Delete Chef</button>
+      <img className="item-img" src={image} />
+      <div className="buttons-div">
+        <button className="delete-btn" onClick={() => deleteChef(details._id)}>
+          Delete Chef
+        </button>
+        <button className="update-btn" onClick={() => updateChef(details._id)}>
+          Update
+        </button>
+      </div>
     </form>
   );
 }

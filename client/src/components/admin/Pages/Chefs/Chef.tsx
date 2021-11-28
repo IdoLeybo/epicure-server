@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import EditForm from "./Modal/EditModals/EditForm";
+import EditForm from "../../Modal/EditModals/EditForm";
 
 export default function Chef(props: any) {
   const details = props.details;
@@ -11,10 +11,10 @@ export default function Chef(props: any) {
 
   return (
     <>
-      <button onClick={openForm}>
+      <div className="item-button" onClick={openForm}>
         <h3>{details.chefName}</h3>
-        <img width="40px" height="40px" src={details.image} alt="" />
-      </button>
+        <img src={details.image} alt="" />
+      </div>
       {isModal && (
         <EditForm modalType={"chef"} openForm={openForm} details={details} />
       )}

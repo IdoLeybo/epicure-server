@@ -35,28 +35,36 @@ export default function CreateRestaurant(props: any) {
   };
 
   return (
-    <form
-      className="edit-modal-container"
-      style={{ display: "flex", flexDirection: "column" }}
-    >
+    <form className="edit-modal-container">
       <h1>Create New Restaurant</h1>
-      <label>Restaurant Name:</label>
+      <label className="label">Restaurant Name:</label>
       <input
+        className="input"
         type="text"
         placeholder="Enter restaurant name"
         onChange={(event) => setName(event.target.value)}
       />
-      <label>Image url:</label>
+      <label className="label">Image url:</label>
       <input
+        className="input"
         type="text"
         placeholder="Enter image URL"
         onChange={(event) => {
           setImage(event.target.value);
         }}
       />
-      {/* {image && <img src={image} width="200px" alt="" />} */}
-      <label>Select chef:</label>
+      {image ? (
+        <img className="item-img" src={image} alt="" />
+      ) : (
+        <img
+          className="dish-img"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSY19XSM-mykA4B-o66_us7Vl2l1dpyXm5j1Q&usqp=CAU"
+          alt=""
+        />
+      )}
+      <label className="label">Select chef:</label>
       <select
+        className="input"
         onChange={(event) => {
           setChef(event.target.value);
         }}
@@ -69,7 +77,9 @@ export default function CreateRestaurant(props: any) {
           );
         })}
       </select>
-      <button onClick={createRestaurant}>Create New Restaurant</button>
+      <button className="update-btn" onClick={createRestaurant}>
+        Create
+      </button>
     </form>
   );
 }

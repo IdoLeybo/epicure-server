@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import { URI } from "../../AdminSystem";
 
 export default function ChefModal(props: any) {
@@ -32,18 +31,20 @@ export default function ChefModal(props: any) {
       price: price,
       restaurant: restaurant,
     };
-    updateFetch(id, data);
+    const type = "update";
+    updateFetch(id, data, type);
   };
 
   const deleteDish = (id: string) => {
     const data = {
       valid: false,
     };
-    updateFetch(id, data);
+    const type = "delete";
+    updateFetch(id, data, type);
   };
 
-  const updateFetch = (id: string, data: object) => {
-    fetch(`${URI}/api/dishes/update/${id}`, {
+  const updateFetch = (id: string, data: object, type: string) => {
+    fetch(`${URI}/api/dishes/${type}/${id}`, {
       method: "POST",
       headers: {
         "Content-type": "application/json",
@@ -70,27 +71,27 @@ export default function ChefModal(props: any) {
   };
 
   return (
-    <form
-      className="edit-modal-container"
-      style={{ display: "flex", flexDirection: "column" }}
-    >
+    <form className="edit-modal-container">
       <h1>Edit Dish details</h1>
-      <label>Dish Name:</label>
+      <label className="label">Dish Name:</label>
       <input
+        className="dish-input"
         type="text"
         value={name}
         placeholder={details.name}
         onChange={(event) => setName(event.target.value)}
       />
-      <label>Description:</label>
+      <label className="label">Description:</label>
       <input
+        className="dish-input"
         type="text"
         value={description}
         placeholder={details.description}
         onChange={(event) => setDescription(event.target.value)}
       />
-      <label>Image url:</label>
+      <label className="label">Image url:</label>
       <input
+        className="dish-input"
         type="text"
         value={image}
         placeholder={details.image}
@@ -98,9 +99,11 @@ export default function ChefModal(props: any) {
           setImage(event.target.value);
         }}
       />
+      <img className="dish-item-img" src={image} />
 
-      <label>Price:</label>
+      <label className="label">Price:</label>
       <input
+        className="price-input"
         type="number"
         value={price}
         placeholder={details.price}
@@ -109,63 +112,52 @@ export default function ChefModal(props: any) {
         }}
       />
 
-      <label>Types:</label>
-      <div>
-        <input
-          type="checkbox"
-          value="vegan"
-          name="type"
-          onChange={(e) => handleOnChange(e)}
-          checked={veganType}
-        />
-        <label htmlFor="vegan">Vegan</label>
+      <label className="label">Types:</label>
+      <div className="types-div">
+        <div>
+          <input
+            type="checkbox"
+            value="vegan"
+            name="type"
+            onChange={(e) => handleOnChange(e)}
+            checked={veganType}
+          />
+          <label htmlFor="vegan">Vegan</label>
+        </div>
+
+        <div>
+          <input
+            type="checkbox"
+            value="spicy"
+            name="type"
+            onChange={(e) => handleOnChange(e)}
+            checked={spicyType}
+          />
+
+          <label htmlFor="spicy">Spicy</label>
+        </div>
+
+        <div>
+          <input
+            type="checkbox"
+            value="vegetarian"
+            name="type"
+            onChange={(e) => handleOnChange(e)}
+            checked={vegetarianType}
+          />
+
+          <label htmlFor="vegetarian">vegetarian</label>
+        </div>
       </div>
 
-      <div>
-        <input
-          type="checkbox"
-          value="spicy"
-          name="type"
-          onChange={(e) => handleOnChange(e)}
-          checked={spicyType}
-        />
-
-        <label htmlFor="spicy">Spicy</label>
+      <div className="buttons-div">
+        <button className="delete-btn" onClick={() => deleteDish(details._id)}>
+          Delete Dish
+        </button>
+        <button className="update-btn" onClick={() => updateDish(details._id)}>
+          Update
+        </button>
       </div>
-
-      <div>
-        <input
-          type="checkbox"
-          value="vegetarian"
-          name="type"
-          onChange={(e) => handleOnChange(e)}
-          checked={vegetarianType}
-        />
-
-        <label htmlFor="vegetarian">vegetarian</label>
-      </div>
-      {/* 
-      <label>Select restaurant:</label>
-      <select
-        value={restaurant}
-        placeholder={details.restaurant}
-        onChange={(event) => {
-          setRestaurant(event.target.value);
-        }}
-      >
-        {restaurants.map((item: any, index: number) => {
-          return (
-            <option key={index} value={item._id}>
-              {item.name}
-            </option>
-          );
-        })}
-        <option value={details.restaurant}>{details.restaurant}</option>
-        <option value="restaurant2">restaurant2</option>
-      </select> */}
-
-      <button onClick={() => updateDish(details._id)}>Update</button>
-      <button onClick={() => deleteDish(details._id)}>Delete Dish</button>
     </form>
   );
 }

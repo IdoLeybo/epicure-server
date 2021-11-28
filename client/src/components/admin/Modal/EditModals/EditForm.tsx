@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ChefModal from "./ChefModal";
 import RestaurantModal from "./RestaurantModal";
 import DishModal from "./DishModal";
-import "../style.scss";
+import "../modals.scss";
 
 export default function EditForm(props: any) {
   const openForm = () => props.openForm();

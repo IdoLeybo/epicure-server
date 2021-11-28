@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Dish from "./Dish";
-import { dish } from "../../interfaces/index.interface";
-import CreateForm from "./Modal/CreateModals/CreateForm";
+import { dish } from "../../../../interfaces/index.interface";
+import CreateForm from "../../Modal/CreateModals/CreateForm";
 
 export default function Dishes(props: any) {
   const [isModal, setIsModal] = useState(false);
@@ -13,10 +13,15 @@ export default function Dishes(props: any) {
     setIsModal(!isModal);
   };
   return (
-    <div>
-      <h1>Dishes</h1>
-      <button onClick={openCreateForm}>Add New Dish</button>
-      <div style={{ display: "flex", flexDirection: "row" }}>
+    <div className="main-div">
+      <div className="header">
+        <h1>Dishes</h1>
+        <span className="add-new" onClick={openCreateForm}>
+          +
+        </span>
+      </div>
+
+      <div className="d-flex items-div">
         {dishes.map((dish: dish, index: any) => {
           return <Dish key={index} details={dish} restaurants={restaurants} />;
         })}

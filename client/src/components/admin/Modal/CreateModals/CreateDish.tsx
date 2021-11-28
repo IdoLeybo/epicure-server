@@ -6,7 +6,6 @@ export default function CreateDish(props: any) {
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
   const [description, setDescription] = useState("");
-  const [typeIcon, setTypeIcon] = useState();
   const [price, setPrice] = useState("0");
   const [restaurant, setRestaurant] = useState(restaurants[0]._id);
   const [veganType, setVeganType] = useState(false);
@@ -15,6 +14,11 @@ export default function CreateDish(props: any) {
   const admin = JSON.parse(localStorage.getItem("admin") as any);
 
   const createDish = () => {
+    const typeIcon = {
+      vegan: veganType,
+      spicy: spicyType,
+      vegetarian: vegetarianType,
+    };
     const data = {
       name: name,
       image: image,
@@ -53,78 +57,95 @@ export default function CreateDish(props: any) {
   };
 
   return (
-    <div
-      className="edit-modal-container"
-      style={{ display: "flex", flexDirection: "column" }}
-    >
+    <form className="edit-modal-container">
       <h1>Create New Dish</h1>
-      <label>Dish Name:</label>
+      <label className="label">Dish Name:</label>
       <input
+        className="dish-input"
         type="text"
         placeholder="Enter dish name"
         onChange={(event) => setName(event.target.value)}
+        required={true}
       />
-      <label>Description:</label>
+      <label className="label">Description:</label>
       <input
+        className="dish-input"
         type="text"
         placeholder="Details on the dish"
         onChange={(event) => setDescription(event.target.value)}
+        required={true}
       />
-      <label>Image url:</label>
+      <label className="label">Image url:</label>
       <input
+        className="dish-input"
         type="text"
         placeholder="Enter image URL"
         onChange={(event) => {
           setImage(event.target.value);
         }}
+        required={true}
       />
+      {image ? (
+        <img className="dish-item-img" src={image} alt="" />
+      ) : (
+        <img
+          className="dish-item-img"
+          src="https://cdn-icons-png.flaticon.com/512/282/282465.png"
+          alt=""
+        />
+      )}
 
-      <label>Price:</label>
+      <label className="label">Price:</label>
       <input
+        className="price-input"
         type="number"
+        placeholder="0"
         onChange={(event) => {
           setPrice(event.target.value);
         }}
+        required={true}
       />
 
-      <label>Types:</label>
-      <div>
-        <input
-          type="checkbox"
-          value="vegan"
-          name="type"
-          onChange={(e) => handleOnChange(e)}
-          checked={veganType}
-        />
-        <label htmlFor="vegan">Vegan</label>
+      <label className="label">Types:</label>
+      <div className="types-div">
+        <div>
+          <input
+            type="checkbox"
+            value="vegan"
+            name="type"
+            onChange={(e) => handleOnChange(e)}
+            checked={veganType}
+          />
+          <label htmlFor="vegan">Vegan</label>
+        </div>
+
+        <div>
+          <input
+            type="checkbox"
+            value="spicy"
+            name="type"
+            onChange={(e) => handleOnChange(e)}
+            checked={spicyType}
+          />
+
+          <label htmlFor="spicy">Spicy</label>
+        </div>
+
+        <div>
+          <input
+            type="checkbox"
+            value="vegetarian"
+            name="type"
+            onChange={(e) => handleOnChange(e)}
+            checked={vegetarianType}
+          />
+
+          <label htmlFor="vegetarian">vegetarian</label>
+        </div>
       </div>
-
-      <div>
-        <input
-          type="checkbox"
-          value="spicy"
-          name="type"
-          onChange={(e) => handleOnChange(e)}
-          checked={spicyType}
-        />
-
-        <label htmlFor="spicy">Spicy</label>
-      </div>
-
-      <div>
-        <input
-          type="checkbox"
-          value="vegetarian"
-          name="type"
-          onChange={(e) => handleOnChange(e)}
-          checked={vegetarianType}
-        />
-
-        <label htmlFor="vegetarian">vegetarian</label>
-      </div>
-
-      <label>Select restaurant:</label>
+      <label className="label">Select restaurant:</label>
       <select
+        className="input"
         onChange={(event) => {
           setRestaurant(event.target.value);
         }}
@@ -138,7 +159,9 @@ export default function CreateDish(props: any) {
         })}
       </select>
 
-      <button onClick={createDish}>Create New Dish</button>
-    </div>
+      <button className="update-btn" onClick={createDish}>
+        Create
+      </button>
+    </form>
   );
 }
