@@ -44,3 +44,64 @@ export function restaurantAggregate(data: any) {
     },
   ];
 }
+
+export function chefRestaurants(id: any) {
+  return [
+    {
+      $match: {
+        _id: new makeObjectId(id),
+      },
+    },
+    {
+      $lookup: {
+        from: "restaurants",
+        localField: "_id",
+        foreignField: "chef",
+        as: "restaurants",
+      },
+    },
+  ];
+}
+
+export function chefsAggregate(verify: any) {
+  return [
+    {
+      $match: verify,
+    },
+    {
+      $lookup: {
+        from: "chefs",
+        localField: "chef",
+        foreignField: "_id",
+        as: "chef",
+      },
+    },
+    { $unwind: "$chef" },
+  ];
+}
+
+export function dishesAggregate(verify: any) {
+  return [
+    {
+      $match: verify,
+    },
+    {
+      $lookup: {
+        from: "restaurants",
+        localField: "restaurant",
+        foreignField: "_id",
+        as: "restaurant",
+      },
+    },
+    { $unwind: "$restaurant" },
+    {
+      $lookup: {
+        from: "chefs",
+        localField: "restaurant.chef",
+        foreignField: "_id",
+        as: "restaurant.chef",
+      },
+    },
+    { $unwind: "$restaurant.chef" },
+  ];
+}

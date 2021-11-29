@@ -1,4 +1,8 @@
-import { gallery } from "../../interfaces/index.interface";
+import {
+  dbDish,
+  dbRestaurant,
+  gallery,
+} from "../../interfaces/index.interface";
 import Gallery from "./Gallery";
 import HomeSection from "./HomeSection";
 import Jumbotron from "./Jumbotron";
@@ -7,155 +11,107 @@ import spicyIcon from "../../assets/images/icons/spicy-icon.svg";
 import veganIcon from "../../assets/images/icons/vegan-icon.svg";
 import vegetarianIcon from "../../assets/images/icons/vegetarian-icon.svg";
 import Footer from "../Footer";
-
-const DUMMY_GALLERY_1: gallery = {
-  size: "md",
-  seeMoreLink: "#",
-  seeMoreText: "All Restaurants",
-  cards: [
-    {
-      image: "claro/claro@3x.png",
-      title: "Claro",
-      content: "Ran Shmueli",
-      link: "#",
-    },
-    {
-      image: "lumina/lumina@3x.png",
-      title: "Lumina",
-      content: "Meir Adoni",
-      link: "#",
-    },
-    {
-      image: "tiger-lili/tiger-lili@3x.png",
-      title: "Tiger Lilly",
-      content: "Yanir Green",
-      link: "#",
-    },
-    {
-      image: "claro/claro@3x.png",
-      title: "Claro",
-      content: "Ran Shmueli",
-      link: "#",
-    },
-    {
-      image: "lumina/lumina@3x.png",
-      title: "Lumina",
-      content: "Meir Adoni",
-      link: "#",
-    },
-    {
-      image: "tiger-lili/tiger-lili@3x.png",
-      title: "Tiger Lilly",
-      content: "Yanir Green",
-      link: "#",
-    },
-  ],
-};
-
-const DUMMY_GALLERY_2: gallery = {
-  size: "lg",
-  seeMoreLink: "#",
-  cards: [
-    {
-      image: "pad-ki-mao/pad-ki-mao@3x.png",
-      title: "Pad Ki Mao",
-      content:
-        "Shrimps, Glass Noodles, Kemiri Nuts, Shallots, Lemon Grass, Magic Chili Brown Coconut",
-      link: "#",
-      price: 88,
-      aboveTitle: "Tiger Lilly",
-      icon: "spicy",
-    },
-    {
-      image: "garbanzo-frito/garbanzo-frito@3x.png",
-      title: "Garbanzo Frito",
-      content:
-        "Polenta fingers, veal cheek,magic chili cured lemon cream, yellow laksa",
-      link: "#",
-      price: 98,
-      aboveTitle: "Kab Kem",
-    },
-    {
-      image: "smoked-pizza/smoked-pizza@3x.png",
-      title: "Smoked Pizza",
-      content: `Basil dough, cashew "butter", demi-glace, bison & radish`,
-      link: "#",
-      price: 65,
-      aboveTitle: "Popina",
-      icon: "vegan",
-    },
-    {
-      image: "pad-ki-mao/pad-ki-mao@3x.png",
-      title: "Pad Ki Mao",
-      content:
-        "Shrimps, Glass Noodles, Kemiri Nuts, Shallots, Lemon Grass, Magic Chili Brown Coconut",
-      link: "#",
-      price: 88,
-      aboveTitle: "Tiger Lilly",
-      icon: "spicy",
-    },
-    {
-      image: "garbanzo-frito/garbanzo-frito@3x.png",
-      title: "Garbanzo Frito",
-      content:
-        "Polenta fingers, veal cheek,magic chili cured lemon cream, yellow laksa",
-      link: "#",
-      price: 98,
-      aboveTitle: "Kab Kem",
-    },
-    {
-      image: "smoked-pizza/smoked-pizza@3x.png",
-      title: "Smoked Pizza",
-      content: `Basil dough, cashew "butter", demi-glace, bison & radish`,
-      link: "#",
-      price: 65,
-      aboveTitle: "Popina",
-      icon: "vegan",
-    },
-  ],
-};
-
-const DUMMY_GALLERY_3: gallery = {
-  size: "sm",
-  seeMoreLink: "#",
-  cards: [
-    {
-      image: "onza/onza@3x.png",
-      title: "Onza",
-      link: "#",
-    },
-    {
-      image: "kitchen-market/kitchen-market@3x.png",
-      title: "Kitchen Market",
-      link: "#",
-    },
-    {
-      image: "mashya/mashya@3x.png",
-      title: "Mashya",
-      link: "#",
-    },
-    {
-      image: "onza/onza@3x.png",
-      title: "Onza",
-      link: "#",
-    },
-    {
-      image: "kitchen-market/kitchen-market@3x.png",
-      title: "Kitchen Market",
-      link: "#",
-    },
-    {
-      image: "mashya/mashya@3x.png",
-      title: "Mashya",
-      link: "#",
-    },
-  ],
-};
+import { useEffect, useState } from "react";
+export const URI = process.env.URI || "http://localhost:8080";
+const user = JSON.parse(localStorage.getItem("user") as any);
 
 const yossiText =
   "Chef Yossi Shitrit has been living and breathing his culinary dreams for more than two decades, including running the kitchen in his first restaurant, the fondly-remembered Violet, located in Moshav  Udim. Shitrit's creativity and culinary  acumen born of long experience  are expressed in the every detail of each and every dish.";
 
 const Homepage = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [restaurantsArr, setRestaurantsArr] = useState([]);
+  const [chefsArr, setChefsArr] = useState([]);
+  const [dishArr, setDishArr] = useState([]);
+  const [chefRests, setChefRests] = useState([]);
+
+  useEffect(() => {
+    if (isLoading === true) {
+      getAllData();
+      setIsLoading(false);
+    }
+  }, []);
+
+  const createGallery1 = (restaurants: dbRestaurant[]): gallery => {
+    const gallery: gallery = {
+      size: "md",
+      seeMoreLink: "#",
+      seeMoreText: "All Restaurants",
+      cards: [],
+    };
+    gallery.cards = restaurants.map((item) => {
+      return {
+        image: item.image,
+        title: item.name,
+        content: item.chef.chefName,
+        link: "#",
+      };
+    });
+    return gallery;
+  };
+
+  const createGallery2 = (dishes: dbDish[]): gallery => {
+    const gallery: gallery = {
+      size: "lg",
+      seeMoreLink: "#",
+      cards: [],
+    };
+    gallery.cards = dishes.map((item) => {
+      return {
+        image: item.image,
+        title: item.name,
+        content: item.description,
+        link: "#",
+        price: item.price,
+        aboveTitle: item.restaurant.name,
+        icon: item.typeIcon,
+      };
+    });
+    return gallery;
+  };
+
+  const createGallery3 = (restaurants: dbRestaurant[]): gallery => {
+    const gallery: gallery = {
+      size: "sm",
+      seeMoreLink: "#",
+      cards: [],
+    };
+    gallery.cards = restaurants.map((item) => {
+      return {
+        image: item.image,
+        title: item.name,
+        link: "#",
+      };
+    });
+    return gallery;
+  };
+
+  const getAllData = async () => {
+    try {
+      const res = await fetch(`${URI}/api/all/data`, {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      const data = await res.json();
+
+      data.map((obj: any) => {
+        obj.name === "chefs"
+          ? setChefsArr(obj.data)
+          : obj.name === "restaurants"
+          ? setRestaurantsArr(obj.data)
+          : obj.name === "chefRestaurants"
+          ? setChefRests(obj.data[0].restaurants)
+          : setDishArr(obj.data);
+      });
+      return;
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <>
       <Jumbotron />
@@ -166,11 +122,12 @@ const Homepage = () => {
         </div>
       </HomeSection>
       <HomeSection title="THE POPULAR RESTAURANTS IN EPICURE :">
-        <Gallery gallery={DUMMY_GALLERY_1} />
+        <Gallery gallery={createGallery1(restaurantsArr)} />
       </HomeSection>
       <HomeSection title="SIGNATURE DISH OF :">
-        <Gallery gallery={DUMMY_GALLERY_2} />
+        <Gallery gallery={createGallery2(dishArr)} />
       </HomeSection>
+
       <HomeSection title="THE MEANING OF OUR ICONS :" background="grey">
         <div className={styles["icons-container"]}>
           <div>
@@ -200,7 +157,7 @@ const Homepage = () => {
           </div>
           <div className={styles["chef-restaurants"]}>
             <h3>Yossi's restaurants :</h3>
-            <Gallery gallery={DUMMY_GALLERY_3} />
+            <Gallery gallery={createGallery3(chefRests)} />
           </div>
         </div>
       </HomeSection>
