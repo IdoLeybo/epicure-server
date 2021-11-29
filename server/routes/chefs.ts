@@ -5,12 +5,37 @@ const Chef = require("../models/chef");
 const Dish = require("../models/dish");
 const Restaurant = require("../models/restaurant");
 const { validateToken } = require("../src/JWT");
+const { chefRestaurants } = require("../aggregations/aggregation");
 
 chefs.get("/", validateToken, (req: Request, res: Response) => {
   Chef.find({}).then((data: object[]) => {
     res.status(200).send(data);
   });
 });
+
+chefs.get(
+  "/restaurants/:id",
+  validateToken,
+  async (req: Request, res: Response) => {
+    const id = req.params.id;
+    try {
+      let response = await Chef.findOne({ _id: id });
+      if (!response) res.status(404).send("Chef ID not found");
+
+      const aggregation = chefRestaurants(response);
+      Chef.aggregate(aggregation)
+        .then((data: any) => {
+          const restaurants = data[0].restaurants;
+          res.send(restaurants);
+        })
+        .catch((err: Error) => {
+          res.send({ error: err });
+        });
+    } catch (err) {
+      res.status(500).send({ error: err });
+    }
+  }
+);
 
 chefs.post("/new", validateToken, (req: Request, res: Response) => {
   const data = req.body;
