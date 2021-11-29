@@ -10,14 +10,6 @@ type props = {
 };
 
 const Card = ({ card, size = "md" }: props) => {
-  let imageFileName: string = "";
-  if (card.image) imageFileName = card.image;
-  let imagePath: string = "";
-  if (card.image)
-    imagePath = require("../../assets/images/cards/".concat(
-      imageFileName
-    )).default;
-
   let backClass = size === "sm" ? "back-beige" : "back-peach";
   let widthClass = "width-1";
   if (size === "md") widthClass = "width-2";
@@ -43,32 +35,34 @@ const Card = ({ card, size = "md" }: props) => {
             styles.img + " " + (size === "lg" ? styles.lg : styles["sm-md"])
           }
           style={{
-            backgroundImage: "url(" + imagePath + ")",
+            backgroundImage: `url(${card.image})`,
           }}
         ></div>
       )}
       <div className={styles["content-wrapper"] + " " + backClass}>
         {card.title && <h4>{card.title}</h4>}
         {card.content && <p>{card.content}</p>}
-        {card.icon === "spicy" && (
-          <div className={styles["icon-wrapper"]}>
-            <img src={spicyIcon} className={styles.icon} alt="spicy" />
-          </div>
-        )}
-        {card.icon === "vegan" && (
-          <div className={styles["icon-wrapper"]}>
-            <img src={veganIcon} className={styles.icon} alt="vegan" />
-          </div>
-        )}
-        {card.icon === "vegetarian" && (
-          <div className={styles["icon-wrapper"]}>
-            <img
-              src={vegetarianIcon}
-              className={styles.icon}
-              alt="vegetarian"
-            />
-          </div>
-        )}
+        <div className={styles["icons-div"]}>
+          {card.icon?.spicy && (
+            <div className={styles["icon-wrapper"]}>
+              <img src={spicyIcon} className={styles.icon} alt="spicy" />
+            </div>
+          )}
+          {card.icon?.vegan && (
+            <div className={styles["icon-wrapper"]}>
+              <img src={veganIcon} className={styles.icon} alt="vegan" />
+            </div>
+          )}
+          {card.icon?.vegetarian && (
+            <div className={styles["icon-wrapper"]}>
+              <img
+                src={vegetarianIcon}
+                className={styles.icon}
+                alt="vegetarian"
+              />
+            </div>
+          )}
+        </div>
         {card.price && (
           <div className={styles.price}>
             <hr />
